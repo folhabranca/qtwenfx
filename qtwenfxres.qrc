@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>netflix_logo.svg</file>
+    </qresource>
+</RCC>
