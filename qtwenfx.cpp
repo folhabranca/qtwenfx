@@ -84,7 +84,6 @@ void WebPlayer::slotFullScreenRequested(QWebEngineFullScreenRequest request)
     } else {
         if (!this->isFullScreen())
             return;
-
         request.accept();
         if (m_wasMaximized) {
             this->showNormal();
@@ -138,6 +137,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     app.setApplicationDisplayName("");
     WebPlayer wp;
+    wp.setWindowTitle("Netflix ...");
     wp.show();
     return app.exec();
 }
