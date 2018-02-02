@@ -5,6 +5,8 @@
 #include <QWebEngineView>
 #include <QWebEngineFullScreenRequest>
 #include <QWebEngineSettings>
+#include <QWebEngineScript>
+#include <QWebEngineScriptCollection>
 
 class WebPlayer : public QMainWindow
 {
@@ -27,6 +29,7 @@ private:
 
     void saveWindowState();
     void restoreWindowState();
+    void changeScrollbar();
 
 protected:
     void closeEvent(QCloseEvent *);
@@ -55,6 +58,7 @@ WebPlayer::WebPlayer(QWidget *parent)
     m_view->page()->setBackgroundColor(Qt::black);
     m_view->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
 
+    changeScrollbar();
 
     connect(m_viewBg->page(),
             &QWebEnginePage::fullScreenRequested,
@@ -107,6 +111,26 @@ void WebPlayer::restoreWindowState()
 {
     restoreState(m_appSettings.value("state/mainWindowState").toByteArray());
     restoreGeometry(m_appSettings.value("geometry/mainWindowGeometry").toByteArray());
+}
+
+void WebPlayer::changeScrollbar()
+{
+    QString s = QString::fromLatin1("(function() {"\
+                                    "    css = document.createElement('style');"\
+                                    "    css.type = 'text/css';"\
+                                    "    css.id = 'scrollbar';"\
+                                    "    document.head.appendChild(css);"\
+                                    "    css.innerText = '::-webkit-scrollbar {width: 5px;} ::-webkit-scrollbar-track {background: #000;} ::-webkit-scrollbar-thumb {background: #B9090B; }';"\
+                                    "})()");
+
+    QWebEngineScript script;
+    script.setName("scroll");
+    script.setSourceCode(s);
+    script.setInjectionPoint(QWebEngineScript::DocumentReady);
+    script.setRunsOnSubFrames(true);
+    script.setWorldId(QWebEngineScript::ApplicationWorld);
+
+    m_viewBg->page()->scripts().insert(script);
 }
 
 void WebPlayer::closeEvent(QCloseEvent *)
