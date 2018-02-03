@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Netflix
+GenericName=Unofficial Netflix Player
+Comment=Unofficial Netflix player using Qt WebEngine
+Categories=Network;AudioVideo;Player;
+Exec=/usr/bin/qtwenfx --disable-seccomp-filter-sandbox --register-pepper-plugins="/usr/lib/qt/plugins/ppapi/libwidevinecdmadapter.so; application/x-ppapi-widevine-cdm"
+Icon=qtwenfx.svg
+StartupNotify=false
+Terminal=false
+Type=Application
+
